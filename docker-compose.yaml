@@ -2,7 +2,8 @@ version: '3'
 
 services:
   client:
-    image: mern/frontendprod:latest
+    build:
+      context: client
     container_name: frontend
     ports:
       - '80:80'
@@ -13,7 +14,8 @@ services:
     restart: always
 
   server:
-    image: mern/backendapi:latest
+    build:
+      context: server
     container_name: backend
     ports:
       - '3000:3000'
@@ -34,7 +36,8 @@ services:
     restart: always
 
   serverdb:
-    image: mern/backendapi:latest
+    build:
+      context: server
     container_name: serverdb
     env_file:
       - .env.docker
