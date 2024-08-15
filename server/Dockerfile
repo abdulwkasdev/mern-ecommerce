@@ -8,13 +8,14 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci 
 
 # Copy the rest of the server code
 COPY . .
 
+ENV NODE_ENV=production
 # Expose port 3000 for the server
 EXPOSE 3000
 
 # Start the server
-CMD [ "npm", "start" ]
+CMD [ "npm", "run", "start" ]
