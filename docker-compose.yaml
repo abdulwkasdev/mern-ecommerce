@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  client:
+    image: mern/frontendprod:latest
+    container_name: frontend
+    ports:
+      - '80:80'
+    environment:
+      - API_URL=http://frontend:3000/api
+    depends_on:
+      - serverdb
+    restart: always
+
+  server:
+    image: mern/backendapi:latest
+    container_name: backend
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env.docker
+    depends_on:
+      - mongo
+    restart: always
+  mongo:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - '27017:27017'
+    env_file:
+      - .env.dockermongo
+    volumes:
+      - dbdata:/data/db
+    restart: always
+
+  serverdb:
+    image: mern/backendapi:latest
+    container_name: serverdb
+    env_file:
+      - .env.docker
+    depends_on:
+      - mongo
+    command: ['npm', 'run', 'seed:db', 'admin@getnada.com', 'adminuser']
+volumes:
+  dbdata:
