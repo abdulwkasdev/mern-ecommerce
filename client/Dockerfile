@@ -13,7 +13,7 @@ RUN npm ci
 # Copy the rest of the client code
 COPY . .
 
-RUN mv .env.example .env
+ENV API_URL=http://localhost:3000/api
 
 # Build the client for production
 RUN npm run build
@@ -22,6 +22,8 @@ RUN npm run build
 FROM nginx:1.27.0-alpine-perl AS production 
 
 COPY --from=build  /usr/src/app/dist /usr/share/nginx/html
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80 
 
